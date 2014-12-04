@@ -11,9 +11,15 @@ class Login extends CI_Controller {
 	public function index()
 	{	
 		
-		$data['register_error'] = ($this->session->flashdata('register_error')) ? $this->session->flashdata('register_error') : FALSE;
-		$data['login_error'] = ($this->session->flashdata('login_error')) ? $this->session->flashdata('login_error') : FALSE;
-		$this->load->view('login_register', $data);
+
+		if($this->session->userdata('is_logged_in') === TRUE)
+			$this->load->view('welcome_user');
+		else
+		{
+			$data['register_error'] = ($this->session->flashdata('register_error')) ? $this->session->flashdata('register_error') : FALSE;
+			$data['login_error'] = ($this->session->flashdata('login_error')) ? $this->session->flashdata('login_error') : FALSE;
+			$this->load->view('login_register', $data);
+		}
 	}
 
 	public function register_process()
@@ -53,7 +59,7 @@ class Login extends CI_Controller {
 
 			$inserted_data = $this->users_model->insert_new_user($user_data);
 			$insert_message = ($inserted_data === TRUE) ? "Registration Success. You may now log in." : "Registration Failed. Please try again.";
-			$this->session->set_flashdata('register_error', $insert_message );
+			$this->session->set_flashdata('register_error', array('error' => $insert_message));
 			
 		}
 		redirect('/login/index');
@@ -96,26 +102,25 @@ class Login extends CI_Controller {
 				);
 
 				$this->session->set_userdata($user_login_data);
-				redirect('/login/confirm_login');
+				redirect(base_url());
 			}
 			else
 			{
-				$this->session->set_flashdata('login_error', 'Invalid email and password.');	
+				$this->session->set_flashdata('login_error', array('email' => $this->input->post('log_email'), 'error' => 'Invalid email and password.'));	
 			}
 		}
 		redirect(base_url());
 	} 
 
-	public function confirm_login()
-	{
-		if($this->session->userdata('is_logged_in') === TRUE)
-			$this->load->view('welcome_user');
-		else
-			redirect('login/index');
-	}
+	// public function confirm_login()
+	// {
+	// 	() ? $this->load->view('welcome_user') : redirect('login/index');
+	// }
 
 	public function logout()
 	{
+		$this->load->helper('url');
+
 		$this->session->sess_destroy();
 		redirect('login/index');
 	}

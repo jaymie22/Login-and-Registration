@@ -13,7 +13,7 @@
 		<form action="/login/login_process" method="post">
 			<div>
 				<label for="log_email">Email:</label>
-				<input type="text" name="log_email" value="<?= isset($login_error) ? $login_error['email'] : ''?>">
+				<input type="text" name="log_email" value="<?= (isset($login_error) && isset($login_error['email'])) ? $login_error['email'] : ''?>">
 			</div>
 
 			<div>
@@ -30,18 +30,18 @@
 		<form action="/login/register_process" method="post">
 			<div>
 				<label for="first_name">First Name:</label>
-				<input type="text" name="first_name" value="<?= isset($register_error) ? $register_error['firstname'] : ''?>">
+				<input type="text" name="first_name" value="<?= (isset($register_error) && isset($register_error['firstname'])) ? $register_error['firstname'] : ''?>">
 
 			</div>
 
 			<div>
 				<label for="last_name">Last Name:</label>
-				<input type="text" name="last_name" value="<?= isset($register_error) ? $register_error['lastname'] : ''?>">
+				<input type="text" name="last_name" value="<?= (isset($register_error) && isset($register_error['lastname'])) ? $register_error['lastname'] : ''?>">
 			</div>
 
 			<div>
 				<label for="reg_email">Email:</label>
-				<input type="text" name="reg_email" value="<?= isset($register_error) ? $register_error['email'] : ''?>">
+				<input type="text" name="reg_email" value="<?= (isset($register_error) && isset($register_error['email'])) ? $register_error['email'] : ''?>">
 			</div>
 
 			<div>
