@@ -9,8 +9,11 @@ class Login extends CI_Controller {
 	}
 
 	public function index()
-	{
-		$this->load->view('login_register');
+	{	
+		
+		$data['register_error'] = ($this->session->flashdata('register_error')) ? $this->session->flashdata('register_error') : FALSE;
+		$data['login_error'] = ($this->session->flashdata('login_error')) ? $this->session->flashdata('login_error') : FALSE;
+		$this->load->view('login_register', $data);
 	}
 
 	public function register_process()
@@ -25,7 +28,16 @@ class Login extends CI_Controller {
 		$this->form_validation->set_rules('cpassword', 'Confirm Pasword', 'required|min_length[8]|matches[reg_password]');
 
 		if($this->form_validation->run() === FALSE)	
-			$this->index();	
+		{
+			$post_value = array(
+							'firstname' => $this->input->post('first_name'),
+							'lastname' => $this->input->post('last_name'),
+							'email' => $this->input->post('reg_email'),
+							'error' => validation_errors()
+			);
+
+			$this->session->set_flashdata('register_error', $post_value);
+		}
 		else
 		{
 			$this->load->model('users_model');
@@ -41,9 +53,10 @@ class Login extends CI_Controller {
 
 			$inserted_data = $this->users_model->insert_new_user($user_data);
 			$insert_message = ($inserted_data === TRUE) ? "Registration Success. You may now log in." : "Registration Failed. Please try again.";
-			$this->session->set_flashdata('insert_status', $insert_message );
-			redirect('/login/index');
+			$this->session->set_flashdata('register_error', $insert_message );
+			
 		}
+		redirect('/login/index');
 	}
 
 	public function login_process()
@@ -55,7 +68,14 @@ class Login extends CI_Controller {
 		$this->form_validation->set_rules('log_password', 'Password', 'required|min_length[8]');
 
 		if($this->form_validation->run() === FALSE)
-			$this->index();
+		{
+			$post_value = array(
+							'email' => $this->input->post('log_email'),
+							'error' => validation_errors()
+			);
+
+			$this->session->set_flashdata('login_error', $post_value);
+		}
 		else
 		{
 			$this->load->model('users_model');
@@ -80,10 +100,10 @@ class Login extends CI_Controller {
 			}
 			else
 			{
-				$this->session->set_flashdata('login_error', 'Invalid email and password.');
-				redirect('/login/index');
+				$this->session->set_flashdata('login_error', 'Invalid email and password.');	
 			}
 		}
+		redirect(base_url());
 	} 
 
 	public function confirm_login()

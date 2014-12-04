@@ -7,22 +7,13 @@
 </head>
 <body>
 <div id="container">
-<?php 
-		if(function_exists('form_error'))
-		{	?>
-			<p><?= form_error('log_email') ?></p>
-			<p><?= form_error('log_password') ?></p>
-<?php
-		}
-?>
-	<p><?= ($this->session->flashdata("login_error")) ? $this->session->flashdata("login_error") : "" ?></p>
-
+	<span><?= (isset($login_error)) ? $login_error['error'] : ''; ?></span>	
 	<fieldset>
 		<legend>Log In</legend>
 		<form action="/login/login_process" method="post">
 			<div>
 				<label for="log_email">Email:</label>
-				<input type="email" name="log_email" value="<?= (function_exists('set_value')) ? set_value('log_email') : ""; ?>">
+				<input type="text" name="log_email" value="<?= isset($login_error) ? $login_error['email'] : ''?>">
 			</div>
 
 			<div>
@@ -33,37 +24,24 @@
 		</form>
 	</fieldset>
 
-<?php 
-		if(function_exists('form_error'))
-		{
-?>
-			<p><?= form_error('first_name') ?></p>
-			<p><?= form_error('last_name') ?></p>
-			<p><?= form_error('reg_email') ?></p>
-			<p><?= form_error('reg_password') ?></p>
-			<p><?= form_error('cpassword') ?></p>
-<?php
-		}
-?>
-	<p><?= ($this->session->flashdata("insert_status")) ? $this->session->flashdata("insert_status") : "" ?></p>
-
+	<span><?= (isset($register_error)) ? $register_error['error'] : ''; ?></span>	
 	<fieldset>
 		<legend>Or Register</legend>
 		<form action="/login/register_process" method="post">
 			<div>
 				<label for="first_name">First Name:</label>
-				<input type="text" name="first_name" value="<?= (function_exists('set_value')) ? set_value('first_name') : ""; ?>">
+				<input type="text" name="first_name" value="<?= isset($register_error) ? $register_error['firstname'] : ''?>">
 
 			</div>
 
 			<div>
 				<label for="last_name">Last Name:</label>
-				<input type="text" name="last_name" value="<?= (function_exists('set_value')) ? set_value('last_name') : ""; ?>">
+				<input type="text" name="last_name" value="<?= isset($register_error) ? $register_error['lastname'] : ''?>">
 			</div>
 
 			<div>
 				<label for="reg_email">Email:</label>
-				<input type="email" name="reg_email" value="<?= (function_exists('set_value')) ? set_value('reg_email') : ""; ?>">
+				<input type="text" name="reg_email" value="<?= isset($register_error) ? $register_error['email'] : ''?>">
 			</div>
 
 			<div>
