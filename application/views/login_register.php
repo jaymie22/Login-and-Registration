@@ -22,7 +22,7 @@
 		<form action="/login/login_process" method="post">
 			<div>
 				<label for="log_email">Email:</label>
-				<input type="email" name="log_email">
+				<input type="email" name="log_email" value="<?= (function_exists('set_value')) ? set_value('log_email') : ""; ?>">
 			</div>
 
 			<div>
@@ -52,18 +52,18 @@
 		<form action="/login/register_process" method="post">
 			<div>
 				<label for="first_name">First Name:</label>
-				<input type="text" name="first_name">
+				<input type="text" name="first_name" value="<?= (function_exists('set_value')) ? set_value('first_name') : ""; ?>">
 
 			</div>
 
 			<div>
 				<label for="last_name">Last Name:</label>
-				<input type="text" name="last_name">
+				<input type="text" name="last_name" value="<?= (function_exists('set_value')) ? set_value('last_name') : ""; ?>">
 			</div>
 
 			<div>
 				<label for="reg_email">Email:</label>
-				<input type="email" name="reg_email">
+				<input type="email" name="reg_email" value="<?= (function_exists('set_value')) ? set_value('reg_email') : ""; ?>">
 			</div>
 
 			<div>
